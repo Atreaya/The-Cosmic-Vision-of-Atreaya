@@ -1,4 +1,4 @@
-# A Cosmic AI and Spatial XR Gaming Vision for Microsoft
+# A Computational AI and Spatial XR Gaming Vision for Microsoft
 
 ## **Introduction**
 Welcome to the future of infrastructure computational fluidity, AI experiential marketing, and the next generation of gaming.
