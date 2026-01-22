@@ -3,35 +3,699 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
-    <title>Space Mining Theme</title>
+    <title>Starbory | The Cosmic Vision</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Grotesk:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --cosmic-purple: #a855f7;
+            --deep-space: #0a0015;
+            --nebula-pink: #ec4899;
+            --star-blue: #3b82f6;
+            --crystal-cyan: #06b6d4;
+            --gold-accent: #fbbf24;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--deep-space);
+            color: #fff;
+            overflow-x: hidden;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white"><circle cx="12" cy="12" r="8" fill="%23a855f7" opacity="0.6"/><circle cx="12" cy="12" r="3" fill="white"/></svg>'), auto;
+        }
+
+        /* Starfield Background */
+        .starfield {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background: radial-gradient(ellipse at bottom, #1b0a2e 0%, #0a0015 100%);
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 2rem 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: linear-gradient(180deg, rgba(10,0,21,0.95) 0%, rgba(10,0,21,0) 100%);
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--cosmic-purple), var(--crystal-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(168, 85, 247, 0.5);
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            background: rgba(168, 85, 247, 0.2);
+            border: 2px solid var(--cosmic-purple);
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+        }
+
+        .btn:hover {
+            background: var(--cosmic-purple);
+            box-shadow: 0 0 30px rgba(168, 85, 247, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .btn.active {
+            background: var(--cosmic-purple);
+            box-shadow: 0 0 30px rgba(168, 85, 247, 0.8);
+        }
+
+        /* Main Container */
+        .container {
+            position: relative;
+            min-height: 100vh;
+            z-index: 1;
+        }
+
+        /* Intro Screen */
+        .intro-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 50;
+            background: var(--deep-space);
+            transition: opacity 1s ease;
+        }
+
+        .intro-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .intro-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 5rem;
+            font-weight: 900;
+            text-align: center;
+            background: linear-gradient(135deg, var(--cosmic-purple), var(--nebula-pink), var(--crystal-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 2rem;
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        .intro-subtitle {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .start-btn {
+            padding: 1.5rem 3rem;
+            font-size: 1.25rem;
+            background: linear-gradient(135deg, var(--cosmic-purple), var(--nebula-pink));
+            border: none;
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: 12px;
+            box-shadow: 0 0 40px rgba(168, 85, 247, 0.6);
+            transition: all 0.3s ease;
+        }
+
+        .start-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 60px rgba(168, 85, 247, 0.9);
+        }
+
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 20px rgba(168, 85, 247, 0.5); }
+            50% { text-shadow: 0 0 40px rgba(168, 85, 247, 0.9); }
+        }
+
+        /* Space Rocks Container */
+        .space-rocks {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 8rem 2rem;
+        }
+
+        .rocks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            max-width: 1400px;
+            width: 100%;
+        }
+
+        /* Individual Space Rock */
+        .space-rock {
+            position: relative;
+            aspect-ratio: 1;
+            cursor: pointer;
+            transition: transform 0.5s ease;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .space-rock:nth-child(1) { animation-delay: 0s; }
+        .space-rock:nth-child(2) { animation-delay: 1s; }
+        .space-rock:nth-child(3) { animation-delay: 2s; }
+        .space-rock:nth-child(4) { animation-delay: 3s; }
+        .space-rock:nth-child(5) { animation-delay: 4s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        .space-rock:hover {
+            transform: scale(1.1) rotate(10deg);
+            z-index: 10;
+        }
+
+        .rock-visual {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--cosmic-purple), var(--nebula-pink));
+            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            box-shadow: 0 0 40px rgba(168, 85, 247, 0.4);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .space-rock:hover .rock-visual {
+            box-shadow: 0 0 80px rgba(168, 85, 247, 0.8);
+        }
+
+        .rock-visual::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(255, 255, 255, 0.03) 10px,
+                rgba(255, 255, 255, 0.03) 20px
+            );
+            animation: shimmer 20s linear infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50%, 50%); }
+        }
+
+        .rock-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .rock-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .rock-subtitle {
+            font-size: 0.85rem;
+            text-align: center;
+            opacity: 0.8;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Slideshow Mode */
+        .slideshow-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: var(--deep-space);
+            z-index: 200;
+            display: none;
+            overflow: hidden;
+        }
+
+        .slideshow-container.active {
+            display: block;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 8rem 4rem;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 1s ease;
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .slide-content {
+            max-width: 1200px;
+            text-align: center;
+        }
+
+        .slide-header {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, var(--cosmic-purple), var(--crystal-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .slide-text {
+            font-size: 1.5rem;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2rem;
+        }
+
+        .slide-highlight {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--gold-accent);
+            margin: 2rem 0;
+            text-shadow: 0 0 20px rgba(251, 191, 36, 0.5);
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            z-index: 250;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--cosmic-purple), var(--nebula-pink));
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* Close Button */
+        .close-btn {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            background: rgba(168, 85, 247, 0.3);
+            border: 2px solid var(--cosmic-purple);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            color: white;
+            cursor: pointer;
+            z-index: 300;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background: var(--cosmic-purple);
+            transform: rotate(90deg);
+        }
+
+        /* Audio Visualizer */
+        .audio-indicator {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            gap: 4px;
+            z-index: 250;
+        }
+
+        .audio-bar {
+            width: 4px;
+            height: 20px;
+            background: var(--cosmic-purple);
+            border-radius: 2px;
+            animation: audioWave 0.8s ease-in-out infinite;
+        }
+
+        .audio-bar:nth-child(2) { animation-delay: 0.1s; }
+        .audio-bar:nth-child(3) { animation-delay: 0.2s; }
+        .audio-bar:nth-child(4) { animation-delay: 0.3s; }
+        .audio-bar:nth-child(5) { animation-delay: 0.4s; }
+
+        @keyframes audioWave {
+            0%, 100% { height: 20px; }
+            50% { height: 40px; }
+        }
+
+        @media (max-width: 768px) {
+            .intro-title { font-size: 3rem; }
+            .slide-header { font-size: 2.5rem; }
+            .slide-text { font-size: 1.2rem; }
+            .nav { padding: 1rem 2rem; }
+            .rocks-grid { grid-template-columns: 1fr; }
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <h1>Space Mining Adventures</h1>
-        <p>Discover the wonders of space exploration!</p>
-    </header>
-    <main>
-        <section id="geodes">
-            <h2>Clickable Geodes</h2>
-            <div class="geode" onclick="openDocument('doc1.html')">Geode 1</div>
-            <div class="geode" onclick="openDocument('doc2.html')">Geode 2</div>
-        </section>
-        <section id="slideshow">
-            <h2>Audio-Synced Slideshow</h2>
-            <div class="slideshow-container">
-                <img class="slide" src="slide1.jpg" alt="Slide 1">
-                <img class="slide" src="slide2.jpg" alt="Slide 2">
+    <!-- Starfield Background -->
+    <div class="starfield" id="starfield"></div>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="logo">STARBORY</div>
+        <div class="controls">
+            <button class="btn" id="interactiveBtn">Interactive Mode</button>
+            <button class="btn" id="slideshowBtn">Auto-Play</button>
+        </div>
+    </nav>
+
+    <!-- Intro Screen -->
+    <div class="intro-screen" id="introScreen">
+        <h1 class="intro-title">STARBORY</h1>
+        <p class="intro-subtitle">Where Innovation Meets the Cosmos</p>
+        <button class="start-btn" id="startBtn">Enter the Vision</button>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container" id="mainContainer" style="display: none;">
+        <!-- Space Rocks Grid -->
+        <div class="space-rocks">
+            <div class="rocks-grid" id="rocksGrid">
+                <!-- Rocks will be generated by JS -->
             </div>
-            <audio controls="controls">
-                <source src="audio.mp3" type="audio/mpeg">
-                Your browser does not support the audio element.
-            </audio>
-        </section>
-    </main>
-    <footer>
-        <p>Content is licensed under <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0</a>.</p>
-    </footer>
-    <script src="script.js"></script>
+        </div>
+    </div>
+
+    <!-- Slideshow Container -->
+    <div class="slideshow-container" id="slideshowContainer">
+        <div class="close-btn" id="closeBtn">×</div>
+        <div id="slidesWrapper"></div>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div class="audio-indicator">
+            <div class="audio-bar"></div>
+            <div class="audio-bar"></div>
+            <div class="audio-bar"></div>
+            <div class="audio-bar"></div>
+            <div class="audio-bar"></div>
+        </div>
+    </div>
+
+    <!-- Audio Element -->
+    <audio id="bgMusic" loop>
+        <!-- You'll need to add the path to your "Bud Simple" audio file -->
+        <source src="Bud_Simple.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // Space Rocks Data
+        const rocks = [
+            {
+                icon: '📜',
+                title: 'The Future - A Manifesto',
+                subtitle: 'A Narrative Vision of Tomorrow',
+                content: `
+                    <h2>The Future: A Story Already Written</h2>
+                    <p>"Dude! Max is coming to Red Hat Amphitheater!" Will braced himself and smiled a grit-eating grin.</p>
+                    <div class="slide-highlight">"Do you wanna be the next Apple/Steve Jobs? Be the forerunner of all things state of play?"</div>
+                    <p>Step into a world where brand battles happen in stadiums, where interactive AR parties need live musicians, where you can become Iron Man for three days and earn $10,000 competing as a jester emperor.</p>
+                    <p style="margin-top: 1.5rem; font-style: italic;">Flying cities. Subconscious immersion gaming. AR arcade diners. Collaborative writing platforms. This isn't speculation—this is the roadmap.</p>
+                    <div class="slide-highlight" style="font-size: 1.5rem; margin-top: 2rem;">"Change is the only constant, my friends. Are you ready for FUN?"</div>
+                `
+            },
+            {
+                icon: '🎮',
+                title: 'Spex Rocks Invention',
+                subtitle: 'Deterministic Spatial Computing',
+                content: `
+                    <h2>Xbox "Spex Rocks" Architecture</h2>
+                    <p>Two levels of XR spatial experiences as cutting-edge computing technology coupled with High Artistic Design "Geode hubs" - glowing crystal Wi-Fi 8 nodules.</p>
+                    <div class="slide-highlight">"I have taken your most advanced cloud code and turned it into a rock you can put on your coffee table."</div>
+                    <p>The Sentinel for home gaming. The Commandery for industrial operations. Microsoft will own the Infrastructure.</p>
+                    <p style="margin-top: 1.5rem;">In the manifesto's future, people compete with Microsoft Spex at Luaus, host mini-festivals with neighborhood passes, and watch brand battles live in stadiums and at home.</p>
+                `
+            },
+            {
+                icon: '🎯',
+                title: 'Sample Spex Rocks Games',
+                subtitle: 'Next-Gen Gaming Experiences',
+                content: `
+                    <h2>Revolutionary Game Concepts</h2>
+                    <p>Magic Flute: Play actual instruments to create virtual civilizations. Vigilante Arena: Race through cage cities in XR space. Acting Game: Create movies through AI-powered improv.</p>
+                    <div class="slide-highlight">Graffiti Games • Sparrows at War • Floating Dance City</div>
+                    <p>Group Therapy: Resolve arguments through double-meaning visuals in 3-10 minutes. Age of Empires Gods: Embody deities with special powers.</p>
+                    <p style="margin-top: 1.5rem;">Soon™: Interactive acting game cruises. Orb: Collaborative writing with fire, water, earth, air, and plasma elements. Win D: AR arcade diners. The future is playful.</p>
+                `
+            },
+            {
+                icon: '🌟',
+                title: 'Brand Entity Platform',
+                subtitle: 'Autonomous Brand Personas',
+                content: `
+                    <h2>Brand Entity Interactive Experience Platform</h2>
+                    <p>Revolutionary approach to brand engagement: autonomous brand entities that exist independently from corporations, interact in AR spaces, and create genuine cultural moments.</p>
+                    <div class="slide-highlight">"Dude! Did you hear? Master Chief came to Chicago and battled Kendrick Lamar!"</div>
+                    <p>This is not advertising. This is culture. XMod, Blizz, and MAX - the next wave of interactive brand experiences.</p>
+                    <p style="margin-top: 1.5rem;">In the manifesto, Will battles Max with improvised comedy. Abbey competes in AI chatrooms. Celebrities like Tom Cruise become Dr. Doom. People WANT to engage with brands.</p>
+                `
+            },
+            {
+                icon: '🔮',
+                title: '4217 Verification System',
+                subtitle: 'Self-Optimizing Data Integrity',
+                content: `
+                    <h2>The 4217 Seven-Layer Verification System</h2>
+                    <p>A revolutionary theoretical framework for data integrity verification through symbolic four-step processing (4-2-1-7) integrated with a seven-layer validation architecture.</p>
+                    <div class="slide-highlight">"A cosmic fart from a cellist who tames the dark in machines"</div>
+                    <p>Key Innovation: Dual verification checkpoints that automatically optimize validation parameters through beginning-to-end comparisons.</p>
+                    <p style="margin-top: 1.5rem;">This is what makes AI safe enough for subconscious immersion gaming, brand autonomy, and Rick & Morty-level chaos without actual universal destruction.</p>
+                `
+            },
+            {
+                icon: '💎',
+                title: 'The Vision',
+                subtitle: 'Starbory Consulting',
+                content: `
+                    <h2>Do You Believe in Magic?</h2>
+                    <p>I have the future for you, served on a plasma platter. Starbory provides "fun growth strategy" consulting on commission - where innovation meets cosmic possibility.</p>
+                    <div class="slide-highlight">"What if you could have your cake and eat it too? What if you could make the internet great again?"</div>
+                    <p>TRUE demand = collaborative generative competitive social gaming. The golden age awaits.</p>
+                    <div class="slide-highlight" style="margin-top: 2rem;">Contact: (984) 259-7238 • atreayalove@gmail.com</div>
+                    <p style="margin-top: 1rem; font-style: italic;">I await your firebuzz as somewhat of a firefly myself 😊</p>
+                `
+            }
+        ];
+
+        // Generate starfield
+        function createStars() {
+            const starfield = document.getElementById('starfield');
+            for (let i = 0; i < 200; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.width = Math.random() * 3 + 'px';
+                star.style.height = star.style.width;
+                star.style.animationDelay = Math.random() * 3 + 's';
+                starfield.appendChild(star);
+            }
+        }
+
+        // Generate rocks
+        function createRocks() {
+            const rocksGrid = document.getElementById('rocksGrid');
+            rocks.forEach((rock, index) => {
+                const rockEl = document.createElement('div');
+                rockEl.className = 'space-rock';
+                rockEl.innerHTML = `
+                    <div class="rock-visual">
+                        <div class="rock-icon">${rock.icon}</div>
+                        <div class="rock-title">${rock.title}</div>
+                        <div class="rock-subtitle">${rock.subtitle}</div>
+                    </div>
+                `;
+                rockEl.addEventListener('click', () => startSlideshow(index));
+                rocksGrid.appendChild(rockEl);
+            });
+        }
+
+        // Start button
+        document.getElementById('startBtn').addEventListener('click', () => {
+            document.getElementById('introScreen').classList.add('hidden');
+            document.getElementById('mainContainer').style.display = 'block';
+        });
+
+        // Slideshow functionality
+        let currentSlide = 0;
+        let slideshowInterval;
+        const audio = document.getElementById('bgMusic');
+
+        function createSlides() {
+            const wrapper = document.getElementById('slidesWrapper');
+            rocks.forEach((rock, index) => {
+                const slide = document.createElement('div');
+                slide.className = 'slide';
+                slide.innerHTML = `<div class="slide-content">${rock.content}</div>`;
+                wrapper.appendChild(slide);
+            });
+        }
+
+        function showSlide(index) {
+            const slides = document.querySelectorAll('.slide');
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+            updateProgress(index);
+        }
+
+        function updateProgress(index) {
+            const progress = ((index + 1) / rocks.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function startSlideshow(startIndex = 0) {
+            currentSlide = startIndex;
+            document.getElementById('slideshowContainer').classList.add('active');
+            showSlide(currentSlide);
+            
+            // Play music
+            audio.play();
+
+            // Auto-advance slides with dynamic timing based on content
+            const slideTiming = [
+                12000,  // Manifesto - longer intro (12 seconds)
+                8000,   // Spex Rocks (8 seconds)
+                7000,   // Games (7 seconds)
+                8000,   // Brand Entity (8 seconds)
+                7000,   // 4217 System (7 seconds)
+                10000   // Vision/Contact (10 seconds for call to action)
+            ];
+            
+            function advanceSlide() {
+                const currentTiming = slideTiming[currentSlide];
+                currentSlide = (currentSlide + 1) % rocks.length;
+                showSlide(currentSlide);
+                
+                slideshowInterval = setTimeout(advanceSlide, slideTiming[currentSlide]);
+            }
+            
+            // Start the first advancement
+            slideshowInterval = setTimeout(advanceSlide, slideTiming[0]);
+        }
+
+        function stopSlideshow() {
+            document.getElementById('slideshowContainer').classList.remove('active');
+            clearTimeout(slideshowInterval);
+            audio.pause();
+            audio.currentTime = 0;
+        }
+
+        // Event listeners
+        document.getElementById('closeBtn').addEventListener('click', stopSlideshow);
+        document.getElementById('slideshowBtn').addEventListener('click', () => startSlideshow(0));
+        document.getElementById('interactiveBtn').addEventListener('click', stopSlideshow);
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (!document.getElementById('slideshowContainer').classList.contains('active')) return;
+            
+            if (e.key === 'ArrowRight') {
+                currentSlide = (currentSlide + 1) % rocks.length;
+                showSlide(currentSlide);
+            } else if (e.key === 'ArrowLeft') {
+                currentSlide = (currentSlide - 1 + rocks.length) % rocks.length;
+                showSlide(currentSlide);
+            } else if (e.key === 'Escape') {
+                stopSlideshow();
+            }
+        });
+
+        // Initialize
+        createStars();
+        createRocks();
+        createSlides();
+    </script>
 </body>
 </html>
