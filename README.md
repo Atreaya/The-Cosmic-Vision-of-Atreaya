@@ -1,5 +1,4 @@
 # A Computational AI and Spatial XR Gaming Vision for Microsoft
-# A Computational AI and Spatial XR Gaming Vision for Microsoft
 
 ## 📜 License - CC0 1.0 Universal (Public Domain)
 
